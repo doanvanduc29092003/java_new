@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/fragments/head :: head"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+	<!-- Site wrapper -->
+	<div class="wrapper">
+
+		<div th:replace="admin/fragments/header :: header"></div>
+
+		<!-- =============================================== -->
+
+		<div th:replace="admin/fragments/sidebar :: sidebar"></div>
+
+		<!-- =============================================== -->
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Blank page <small>it all starts here</small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+					<li><a href="#">Examples</a></li>
+					<li class="active">Blank page</li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+
+				<!-- Default box -->
+				<div class="box">
+					<div class="box-header with-border">
+						<h3 class="box-title">Chào mừng bạn đến với trang danh mục</h3>
+
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse" data-toggle="tooltip" title="Collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<div class="box-body">Chào Đại Ca nhá!</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="box">
+							<div class="box-header with-border">
+								<h3 class="box-title">Danh sách sản phẩm</h3>
+								
+							</div>
+
+							<div class="box-body">
+								<form action="">
+									<div class="input-group input-group-sm hidden-xs" style="width: 200px; max-width: 100%;">
+								    
+								    	<input type="text" name="keyword" class="form-control pull-right" placeholder="Search" style="border-radius: 4px 0 0 4px; box-shadow: none;" th:value="${keyword}">
+									    <span class="input-group-btn">
+									        <button type="submit" class="btn btn-default" style="border-radius: 0 4px 4px 0; background-color: #f5f5f5; border-color: #ddd;">
+									            <i class="fa fa-search"></i>
+									        </button>
+									        <button type="button" class="btn btn-default" style="border-radius: 0 4px 4px 0; background-color: #f5f5f5; color: red;margin-left: 5px;" onclick="redirectToCategory()">
+									            <i class="fa fa-rotate-left"></i>
+									        </button>
+									        <script>
+											    function redirectToCategory() {
+											        window.location.href = "product";
+											    }
+											</script>
+									    </span>
+									</div>
+								</form>
+								<table class="table table-bordered">
+									<tbody>
+										<tr>
+											<th style="width: 10px">ID</th>
+											<th>Product Name (Tên)</th>
+											<th>Giá</th>
+											<th>Ảnh</th>
+											<th>Số lượng</th>
+											<th>Đã bán</th>
+											<th>Danh mục</th>
+											<th>Action</th>
+										</tr>
+										<tr th:each="product : ${listCategory}">
+											<td th:text="${product.id}"></td>
+											<td th:text="${product.productName}"></td>
+											
+											<td th:text="${product.price}"></td>
+											<td>
+												<img alt="User Image" th:src="@{'/uploads/' + ${product.image}}" width="100px">
+											</td>
+											<td th:text="${product.quantity}"></td>
+											<td th:text="${product.quantitySold}"></td>
+											<td th:text="${product.category.categoryName}"></td>
+											<td>
+												<a th:href="@{/admin/edit-product/{id}(id=${product.id})}" class="btn btn-success">Edit</a>
+												<a th:href="@{/admin/delete-product/{id}(id=${product.id})}" onclick="return confirm('bạn chắc chắn chứ')" class="btn btn-danger">Delete</a>
+											</td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+
+							<div class="box-footer clearfix">
+								<ul class="pagination pagination-sm no-margin pull-right">
+    								<!-- Nút Previous -->
+								    <li th:if="${currentPage > 1}">
+								        <a th:href="'?pageNo=' + ${currentPage - 1}">«</a>
+								    </li>
+								    
+								    <!-- Hiển thị danh sách các trang -->
+								    <li th:each="i : ${#numbers.sequence(1, totalPage)}" 
+								        th:classappend="${currentPage == i} ? 'active' : ''">
+								        <a th:href="'?' + ${keyword != null && !keyword.isEmpty()? 'keyword=' + keyword + '&' : ''} + 'pageNo=' + ${i}" 
+								           th:text="${i}"></a>
+								    </li>
+								    
+								    <!-- Nút Next -->
+								    <li th:if="${currentPage < totalPage}">
+								        <a th:href="'?pageNo=' + ${currentPage + 1}">»</a>
+								    </li>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+		<div th:replace="admin/fragments/footer :: footer"></div>
+
+	</div>
+	<!-- ./wrapper -->
+
+	<!-- jQuery 3 -->
+
+	<div th:replace="admin/fragments/script :: script"></div>
+</body>
+</html>
